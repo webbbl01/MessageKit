@@ -30,6 +30,7 @@ open class MessageKitDateFormatter {
 
     public static let shared = MessageKitDateFormatter()
 
+    public var shouldLimitLines = false
     private let formatter = DateFormatter()
 
     // MARK: - Initializer

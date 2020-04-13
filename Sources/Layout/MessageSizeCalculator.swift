@@ -277,18 +277,24 @@ open class MessageSizeCalculator: CellSizeCalculator {
         return layout
     }
 
-    internal func labelSize(for attributedText: NSAttributedString, considering maxWidth: CGFloat) -> CGSize {
+    internal func labelSize(for attributedText: NSAttributedString?, considering maxWidth: CGFloat) -> CGSize {
+        guard let attributedText = attributedText else {
+            return .zero
+        }
+        
         let constraintBox = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
         let rect = attributedText.boundingRect(with: constraintBox, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).integral
         
         if MessageKitDateFormatter.shared.shouldLimitLines {
             let attributes = attributedText.attributes(at: 0, effectiveRange: nil)
-            let font = attributes[.font] as? UIFont
-            let lineHeight = font?.lineHeight ?? 1
+            guard let font = attributes[.font] as? UIFont else {
+                return rect.size
+            }
+            let lineHeight = font.lineHeight
             let lines = Int(ceil(rect.height / (lineHeight)))
             
-            if lines > 2 {
-                return CGSize(width: maxWidth, height: lineHeight * 2)
+            if lines > 3 {
+                return CGSize(width: maxWidth, height: lineHeight * 3)
             } else {
                 return rect.size
             }

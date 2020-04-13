@@ -47,7 +47,7 @@ open class TextMessageSizeCalculator: MessageSizeCalculator {
         let maxWidth = messageContainerMaxWidth(for: message)
 
         var messageContainerSize: CGSize
-        let attributedText: NSAttributedString
+        let attributedText: NSAttributedString?
 
         switch message.kind {
         case .attributedText(let text):
